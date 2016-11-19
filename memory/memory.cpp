@@ -21,6 +21,7 @@ void wyswietl(Karta **karta);
 Karta** inicjalizuj(symbol *tablicaSymboli[ileSymboli]);
 void wybierzKarte(Karta **karta);
 bool czyWygrane(Karta **karta);
+void ktoraKarta(int &x, int &y, int nrKarty, Karta **karta);
 
 int n, m;
 
@@ -29,13 +30,14 @@ int main() {
 	// TODO: wybranie rozmiaru planszy	
 	//chwilowo hardcodowany rozmiar 4x3
 	do {
+		system("cls");
 		cout << "Rozmiar planszy do gry - x * y -> parzyste i niewiêksze niz " << ileSymboli * 2 << endl;
 		cout << "\tx: ";
 		cin >> n;
 		cout << "\ty: ";
 		cin >> m;
 	} while (!(((n * m) % 2 == 0) && ((n * m) / 2 <= ileSymboli)));
-
+	cin.ignore();
 
 	symbol *tablicaSymboli[ileSymboli];
 
@@ -182,32 +184,26 @@ void wyswietl(Karta **karta) {
 }
 
 void wybierzKarte(Karta **karta) {
-	cout << "wybierz pierwsza karte (x y): ";
-	int x1, y1;
-	cin >> x1;
-	cin >> y1;
 
+	int x1, y1;
+	ktoraKarta(x1, y1, 1, karta);
 	if (karta[y1][x1].odkryta == true) {
 		cout << "Bledny ruch - karta juz odkryta" << endl;
 		system("PAUSE");
 		return;
 	}
-
 	karta[y1][x1].odkryta = true;
 	wyswietl(karta);
 
 	cout << "wybierz druga karte: ";
 	int x2, y2;
-	cin >> x2;
-	cin >> y2;
-
+	ktoraKarta(x2, y2, 2, karta);
 	if (karta[y2][x2].odkryta == true) {
 		cout << "Bledny ruch - karta juz odkryta" << endl;
 		karta[y1][x1].odkryta = false;	//TODO: zamieniæ na powtórne wpisanie drugiej karty zamiast przerywania ruchu
 		system("PAUSE");
 		return;
 	}
-
 	karta[y2][x2].odkryta = true;
 	wyswietl(karta);
 
@@ -234,4 +230,44 @@ bool czyWygrane(Karta **karta) {
 		}
 	}
 	return true;
+}
+
+void ktoraKarta(int &x, int &y, int nrKarty, Karta **karta) {
+
+	do {
+		system("cls");
+		wyswietl(karta);
+
+		char iks, igrek;
+
+		if (nrKarty == 1) {
+			cout << "wybierz pierwsza karte (xy): ";
+		}
+		else if (nrKarty == 2) {
+			cout << "wybierz druga karte (xy): ";
+		}
+
+		cin.get(iks);
+		if (iks == '\n') {
+			cout << "x to enter" << endl;
+			continue;
+		}
+		cin.get(igrek);
+		if (igrek == '\n') {
+			cout << "y to enter" << endl;
+			continue;
+		}
+		cin.ignore();
+
+
+			if (iks >= 65 && iks <= 73) {
+				x = static_cast<int>(iks - 65);	//zamiana znaku ASCII na int
+			}
+			else if (iks >= 97 && iks <= 105) {
+				x = static_cast<int>(iks - 97);
+			}
+			y = static_cast<int>(igrek - 49);
+
+	} while (!(x < n && y < m && x >= 0 && y >= 0));
+
 }
