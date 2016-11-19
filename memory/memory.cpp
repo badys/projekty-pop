@@ -26,9 +26,16 @@ int n, m;
 
 int main() {
 
-	// TODO: wybranie rozmiaru planszy	(n * m) % 2 == 0 && (n * m) / 2 <= ileSymboli
+	// TODO: wybranie rozmiaru planszy	
 	//chwilowo hardcodowany rozmiar 4x3
-	n = 4, m = 3;
+	do {
+		cout << "Rozmiar planszy do gry - x * y -> parzyste i niewiêksze niz " << ileSymboli * 2 << endl;
+		cout << "\tx: ";
+		cin >> n;
+		cout << "\ty: ";
+		cin >> m;
+	} while (!(((n * m) % 2 == 0) && ((n * m) / 2 <= ileSymboli)));
+
 
 	symbol *tablicaSymboli[ileSymboli];
 
@@ -85,6 +92,7 @@ int main() {
 		wygrane = czyWygrane(karta);
 	}
 	
+	cout << "WYGRANA" << endl;
 
 	system("PAUSE");
 	return 0;
@@ -109,7 +117,7 @@ Karta** inicjalizuj(symbol *tablicaSymboli[ileSymboli]) {
 	//generator liczb pseudo-losowych
 	srand(time(NULL));
 	//dla ka¿dej pary symboli losuje dwie karty, które nie zosta³y jeszcze odkryte(nie ustawiono im symbolu) i ustawia dla nich symbol(parê)
-	for (int p = 0; p < ileSymboli; p++) {
+	for (int p = 0; p < (n * m) / 2; p++) {
 		int x1, y1;
 		do{
 			x1 = rand() % n;
